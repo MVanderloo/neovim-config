@@ -69,7 +69,7 @@
         nvim = pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
           luaRcContent = "";
           wrapRc = false;
-          wrapperArgs = lib.escapeShellArgs [
+          wrapperArgs = [
             "--prefix"
             "PATH"
             ":"
@@ -80,7 +80,11 @@
       {
         packages.default = nvim;
         packages.nvim = nvim;
-        apps.default = flake-utils.lib.mkApp { drv = nvim; };
+        apps.default = flake-utils.lib.mkApp {
+          type = "app";
+          program = "${nvim}/bin/nvim";
+        };
+
         formatter = pkgs.nixfmt-tree;
       }
     );
